@@ -70,12 +70,18 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+
+  <header class="w3-container w3-xlarge">
+    <p class="w3-left"></p>
+    <p class="w3-right">
+    </p>
+  </header>
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:250px">
+<div class="w3-main" style="margin-left:290px">
   <div class="w3-display-container w3-container">
-    <img src="/img/Conference.jpg" alt="Jeans" style="padding:40px; width:100%">
-    <div class="w3-display-topleft w3-text-white" style="padding:44px 68px">
-      <h2 class="w3-jumbo w3-hide-small">Conference 2019</h2>
+    <img src="/img/conference.jpg" alt="Jeans" style="padding:40px; width:100%">
+    <div class="w3-display-topleft w3-text-white" style="padding:44px 90px">
+      <h1 class="w3-wide ">Conference 2019</h1>
 
     </div>
   </div>

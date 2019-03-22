@@ -30,13 +30,13 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </div>
   <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
     <a href="/index.php" class="w3-bar-item w3-button">Home</a>
-    <a href="#" class="w3-bar-item w3-button w3-light-grey">Committee</a>
+    <a href="committee.php" class="w3-bar-item w3-button">Committee</a>
     <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Jobs <i class="fa fa-caret-down"></i>
     </a>
 	
     <div id="demoAcc1" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <a href="/jobs.php" class="w3-bar-item w3-button">All Jobs</a>
+      <a href="/jobs.php" class="w3-bar-item w3-button w3-light-grey">All Jobs</a>
       <a href="#" class="w3-bar-item w3-button">By Company</a>
     </div>
 	<a onclick="myAccFunc2()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
@@ -70,21 +70,27 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+  <header class="w3-container w3-xlarge">
+    <p class="w3-left"></p>
+    <p class="w3-right">
+    </p>
+  </header>
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:300px">
+<div class="w3-main" style="margin-left:290px">
   <div class="w3-display-container w3-container">
+    <div class="w3-display-topleft" style="padding:44px 68px">
     <div class="w3-display-topleft" style="padding:44px 68px">
 
     </div>
 
   </div>
 	<?php
-		echo "<h1>Conference Committee</h1>";
-		echo "<h3>List of Subcommittees</h3>";
+		echo "<h1>All jobs</h1>";
+		echo "<h3>Full list of available jobs</h3>";
 		$sth = $dbh->prepare('SELECT * FROM `jobposting`');
 		$sth->execute();
 		
-		echo "<table style=\"w3-table\">";
+		echo "<table class=\"w3-table\">";
 		while ($row = $sth->fetch()) {
                    echo "<tr>";
                    echo "<td>".$row[jID]."</td>";

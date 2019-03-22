@@ -69,22 +69,41 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
-
+<!-- Top header -->
+  <header class="w3-container w3-xlarge">
+    <p class="w3-left"></p>
+    <p class="w3-right">
+    </p>
+  </header>
 <!-- !PAGE CONTENT! -->
-<div class="w3-main" style="margin-left:250px">
+<div class="w3-main" style="margin-left:290px">
   <div class="w3-display-container w3-container">
     <div class="w3-display-topleft" style="padding:44px 68px">
 
     </div>
 
   </div>
+	<h1>Conference Committee</h1>
+	<h3>List of Subcommittees</h3>
+	<p>
+		What subcommittee?
+		<select class="w3-select w3-border" name="formGender">
+			<option value="">Select...</option>
+			<option value="PC">Program Committee</option>
+			<option value="RC">Registration Committee</option>
+		</select>
+	</p>
 	<?php
-		echo "<h1>Conference Committee</h1>";
-		echo "<h3>List of Subcommittees</h3>";
+		
+		if(isset($_POST['formGender']) ) {
+			$varGender = $_POST['formGender'];
+			echo "<h1>STUFF</h1>";
+		}
+
 		$sth = $dbh->prepare('SELECT * FROM `committee`');
 		$sth->execute();
 		
-		echo "<table style=\"w3-table\">";
+		echo "<table class=\"w3-table\" style=\"color:black\">";
 		while ($row = $sth->fetch()) {
                    echo "<tr>";
                    echo "<td>".$row[commName]."</td>";
