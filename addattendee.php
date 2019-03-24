@@ -70,6 +70,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+
   <header class="w3-container w3-xlarge">
     <p class="w3-left"></p>
     <p class="w3-right">
@@ -77,41 +78,47 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
   </header>
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:290px">
-  <div class="w3-display-container w3-container">
-    <div class="w3-display-topleft" style="padding:44px 68px">
-    <div class="w3-display-topleft" style="padding:44px 68px">
+  <div class="w3-display-container w3-container" style="padding:10px" >
+	<h1> Add attendee</h1>
 
-    </div>
-
-  </div>
-	<?php
-		echo "<h1>All jobs</h1>";
-		echo "<h3>Full list of available jobs</h3>";
-		$sth = $dbh->prepare('SELECT * FROM `jobposting`');
-		$sth->execute();
-		
-		echo "<table class=\"w3-table\">";
-		echo "<tr>";
-		echo "<td><b> job ID</b></td>";
-		echo "<td><b> Title</b></td>";
-        echo "<td><b> City</b></td>";
-		echo "<td><b> Province</b></td>";
-        echo "<td><b> Salary</b></td>";
-		echo "<td><b> Company</b></td>";
-        echo "</tr>";
-		while ($row = $sth->fetch()) {
-                   echo "<tr>";
-                   echo "<td>".$row[jID]."</td>";
-                   echo "<td>".$row[jobTitle]."</td>";
-                   echo "<td>".$row[city]."</td>";
-				   echo "<td>".$row[province]."</td>";
-                   echo "<td>".$row[payRate]."</td>";
-				   echo "<td>".$row[companyName]."</td>";
-                   
-                   echo "</tr>";
-               }
-		echo "</table>";
 	
+	
+  </div>
+  <div  class="w3-container" style="padding:20px;background-color: #f2f2f2;" >
+		<h3>Add a new company: </h3>
+		<form class="w3-form" method="post">
+			First name: <input class="w3-input" type="text" name="fName"><br>
+			Last name: <input class="w3-input" type="text" name="lName"><br>
+			Street: <input class="w3-input" type="text" name="street"><br>
+			City: <input class="w3-input" type="text" name="city"><br>
+			Province: <input class="w3-input" type="text" name="province"><br>
+			Email: <input class="w3-input" type="text" name="email"><br>
+			Sponsorship tier:
+			<select class="w3-select w3-border" name="formTier">
+				
+				<option value="">Select a type of attendee</option>
+				<option value="Student">Student</option>
+				<option value="Professional">Professional</option>
+				<option value="Sponsor">Gold</option>
+			</select>
+			<input class="w3-button" type="submit" style="margin-top:10px">
+		</form>
+	</div>
+	<?php
+		if(isset($_POST['fName']) and isset($_POST['lName'])) {
+			
+			$query = "CREATE VIEW temphousing as sELECT COUNT(student.aID) as numOccupied, student.roomNumber from student group by (student.roomNumber);
+				  CREATE VIEW accom as SELECT * from room NATURAL JOIN (temphousing) where room.roomNumber = temphousing.roomNumber;
+				  SELECT accom.roomNumber, MAX(accom.numBeds *2 - accom.numOccupied) FROM accom where accom.numBeds *2 > accom.numOccupied;
+				  DROP VIEW temphousing;
+				  DROP view accom;";
+				  
+			$sql = $dbh->prepare("INSERT INTO company (companyName, sponsorship_tier, emailsSent)
+					VALUES ('".$_POST['companyName']."', '".$_POST['formTier']."', 0)");
+    
+			$sql->execute();
+			header("Refresh:0");
+		}
 	?>
 </div>
 

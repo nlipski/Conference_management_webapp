@@ -37,24 +37,24 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 	
     <div id="demoAcc1" class="w3-bar-block w3-hide w3-padding-large w3-medium">
       <a href="/jobs.php" class="w3-bar-item w3-button">All Jobs</a>
-      <a href="#" class="w3-bar-item w3-button">By Company</a>
+      <a href="jobsbycompany.php" class="w3-bar-item w3-button">By Company</a>
     </div>
 	<a onclick="myAccFunc2()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Attendees <i class="fa fa-caret-down"></i>
     </a>
 	<div id="demoAcc2" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <a href="#" class="w3-bar-item w3-button">By Class</a>
-      <a href="#" class="w3-bar-item w3-button">By Company</a>
+      <a href="attendeesbyclass.php" class="w3-bar-item w3-button">By Class</a>
+      <a href="attendeesbycompany.php" class="w3-bar-item w3-button">By Company</a>
     </div>
 	
-    <a href="#" class="w3-bar-item w3-button">Schedule</a>
-    <a href="#" class="w3-bar-item w3-button">Hotel Assignment</a>
-    <a href="#" class="w3-bar-item w3-button">Sponsors</a>
+    <a href="schedule.php" class="w3-bar-item w3-button">Schedule</a>
+    <a href="hotel.php" class="w3-bar-item w3-button">Hotel Assignment</a>
+    <a href="sponsors.php" class="w3-bar-item w3-button">Sponsors</a>
 	<a onclick="myAccFunc3()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Edit <i class="fa fa-caret-down"></i>
     </a>
 	<div id="demoAcc3" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <a href="#" class="w3-bar-item w3-button">Add</a>
+      <a href="addattendee.php" class="w3-bar-item w3-button">Add</a>
 	  <a href="#" class="w3-bar-item w3-button">Update</a>
       <a href="#" class="w3-bar-item w3-button">Remove</a>
     </div>

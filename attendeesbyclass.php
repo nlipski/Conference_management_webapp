@@ -70,48 +70,113 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+
   <header class="w3-container w3-xlarge">
     <p class="w3-left"></p>
     <p class="w3-right">
     </p>
   </header>
+  
+  
+  
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:290px">
   <div class="w3-display-container w3-container">
     <div class="w3-display-topleft" style="padding:44px 68px">
-    <div class="w3-display-topleft" style="padding:44px 68px">
+	
+   </div>
+	
+	<h1>Attendees by class</h1>
 
-    </div>
-
-  </div>
+	
 	<?php
-		echo "<h1>All jobs</h1>";
-		echo "<h3>Full list of available jobs</h3>";
-		$sth = $dbh->prepare('SELECT * FROM `jobposting`');
+		
+		echo "<h3>List of student attending: </h3>";
+		$sth = $dbh->prepare("select * from attendee where attendee.attendeeType =\"Student\"");
 		$sth->execute();
 		
 		echo "<table class=\"w3-table\">";
 		echo "<tr>";
-		echo "<td><b> job ID</b></td>";
-		echo "<td><b> Title</b></td>";
-        echo "<td><b> City</b></td>";
-		echo "<td><b> Province</b></td>";
-        echo "<td><b> Salary</b></td>";
-		echo "<td><b> Company</b></td>";
-        echo "</tr>";
+		echo "<td><b> First Name</b></td>";
+		echo "<td><b> Last Name</b></td>";
+		echo "<td><b> City</b></td>";
+		echo "<td><b> Street</b></td>";
+		echo "<td><b> Province </b></td>";
+		echo "<td><b> Email </b></td>";
+		echo "</tr>";
 		while ($row = $sth->fetch()) {
-                   echo "<tr>";
-                   echo "<td>".$row[jID]."</td>";
-                   echo "<td>".$row[jobTitle]."</td>";
-                   echo "<td>".$row[city]."</td>";
-				   echo "<td>".$row[province]."</td>";
-                   echo "<td>".$row[payRate]."</td>";
-				   echo "<td>".$row[companyName]."</td>";
-                   
-                   echo "</tr>";
-               }
+            echo "<tr>";
+            echo "<td>".$row[fName]."</td>";
+            echo "<td>".$row[lName]."</td>";
+			echo "<td>".$row[street]."</td>";
+            echo "<td>".$row[city]."</td>";
+			echo "<td>".$row[province]."</td>";
+            echo "<td>".$row[email]."</td>";
+            echo "</tr>";
+        }
 		echo "</table>";
+		
+	?>
 	
+	<?php
+		
+		
+		echo "<h3>List of Professionals attending</h3>";
+		$sth = $dbh->prepare("select * from attendee where attendee.attendeeType =\"Professional\"");
+		$sth->execute();
+		
+		echo "<table class=\"w3-table\">";
+		echo "<tr>";
+		echo "<td><b> First Name</b></td>";
+		echo "<td><b> Last Name</b></td>";
+		echo "<td><b> City</b></td>";
+		echo "<td><b> Street</b></td>";
+		echo "<td><b> Province </b></td>";
+		echo "<td><b> Email </b></td>";
+		echo "</tr>";
+		while ($row = $sth->fetch()) {
+            echo "<tr>";
+            echo "<td>".$row[fName]."</td>";
+            echo "<td>".$row[lName]."</td>";
+			echo "<td>".$row[street]."</td>";
+            echo "<td>".$row[city]."</td>";
+			echo "<td>".$row[province]."</td>";
+            echo "<td>".$row[email]."</td>";
+            echo "</tr>";
+        }
+		echo "</table>";
+		
+	?>
+	
+		<?php
+		
+		
+		
+		echo "<h3>List of Sponsors attending</h3>";
+		$sth = $dbh->prepare("select * from attendee where attendee.attendeeType =\"Sponsor\"");
+		$sth->execute();
+		
+		echo "<table class=\"w3-table\">";
+		echo "<tr>";
+		echo "<td><b> First Name</b></td>";
+		echo "<td><b> Last Name</b></td>";
+		echo "<td><b> City</b></td>";
+		echo "<td><b> Street</b></td>";
+		echo "<td><b> Province </b></td>";
+		echo "<td><b> Email </b></td>";
+		echo "</tr>";
+		while ($row = $sth->fetch()) {
+            echo "<tr>";
+            echo "<td>".$row[fName]."</td>";
+            echo "<td>".$row[lName]."</td>";
+			echo "<td>".$row[street]."</td>";
+            echo "<td>".$row[city]."</td>";
+			echo "<td>".$row[province]."</td>";
+            echo "<td>".$row[email]."</td>";
+            echo "</tr>";
+        }
+		echo "</table>";
+		
 	?>
 </div>
 

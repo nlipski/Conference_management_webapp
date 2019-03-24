@@ -22,39 +22,38 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 </style>
 <body class="w3-content" style="max-width:1200px">
 
-<!-- Sidebar/menu -->
 <nav class="w3-sidebar w3-bar-block w3-white w3-collapse w3-top" style="z-index:3;width:250px" id="mySidebar">
   <div class="w3-container w3-display-container w3-padding-16">
     <i onclick="w3_close()" class="fa fa-remove w3-hide-large w3-button w3-display-topright"></i>
-    <h3 href="#"  class="w3-wide"><b>Conference Management Application</b></h3>
+    <h3 href=""  class="w3-wide"><b>Conference Management Application</b></h3>
   </div>
   <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
-    <a href="/index.php" class="w3-bar-item w3-button">Home</a>
-    <a href="#" class="w3-bar-item w3-button w3-light-grey">Committee</a>
+    <a href="/index.php" class="w3-bar-item w3-button w3-light-grey">Home</a>
+    <a href="/committee.php" class="w3-bar-item w3-button">Committee</a>
     <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Jobs <i class="fa fa-caret-down"></i>
     </a>
 	
     <div id="demoAcc1" class="w3-bar-block w3-hide w3-padding-large w3-medium">
       <a href="/jobs.php" class="w3-bar-item w3-button">All Jobs</a>
-      <a href="#" class="w3-bar-item w3-button">By Company</a>
+      <a href="jobsbycompany.php" class="w3-bar-item w3-button">By Company</a>
     </div>
 	<a onclick="myAccFunc2()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Attendees <i class="fa fa-caret-down"></i>
     </a>
 	<div id="demoAcc2" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <a href="#" class="w3-bar-item w3-button">By Class</a>
-      <a href="#" class="w3-bar-item w3-button">By Company</a>
+      <a href="attendeesbyclass.php" class="w3-bar-item w3-button">By Class</a>
+      <a href="attendeesbycompany.php" class="w3-bar-item w3-button">By Company</a>
     </div>
 	
-    <a href="#" class="w3-bar-item w3-button">Schedule</a>
-    <a href="#" class="w3-bar-item w3-button">Hotel Assignment</a>
-    <a href="#" class="w3-bar-item w3-button">Sponsors</a>
+    <a href="schedule.php" class="w3-bar-item w3-button">Schedule</a>
+    <a href="hotel.php" class="w3-bar-item w3-button">Hotel Assignment</a>
+    <a href="sponsors.php" class="w3-bar-item w3-button">Sponsors</a>
 	<a onclick="myAccFunc3()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Edit <i class="fa fa-caret-down"></i>
     </a>
 	<div id="demoAcc3" class="w3-bar-block w3-hide w3-padding-large w3-medium">
-      <a href="#" class="w3-bar-item w3-button">Add</a>
+      <a href="addattendee.php" class="w3-bar-item w3-button">Add</a>
 	  <a href="#" class="w3-bar-item w3-button">Update</a>
       <a href="#" class="w3-bar-item w3-button">Remove</a>
     </div>
@@ -84,33 +83,40 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 
   </div>
 	<h1>Conference Committee</h1>
-	<h3>List of Subcommittees</h3>
-	<p>
-		What subcommittee?
-		<select class="w3-select w3-border" name="formGender">
-			<option value="">Select...</option>
-			<option value="PC">Program Committee</option>
-			<option value="RC">Registration Committee</option>
+
+	<form class="w3-form" method="post">
+		<select class="w3-select w3-border" name="formCom">
+			<option value="">Select a subcommittee</option>
+			<option value="Program Committee">Program Committee</option>
+			<option value="Registration Committee">Registration Committee</option>
 		</select>
-	</p>
+		<input class="w3-button "type="submit" name="Submit" value="Choose">
+	</form>
+	
+	
 	<?php
 		
-		if(isset($_POST['formGender']) ) {
-			$varGender = $_POST['formGender'];
-			echo "<h1>STUFF</h1>";
-		}
-
-		$sth = $dbh->prepare('SELECT * FROM `committee`');
-		$sth->execute();
-		
-		echo "<table class=\"w3-table\" style=\"color:black\">";
-		while ($row = $sth->fetch()) {
+		if(isset($_POST['formCom']) ) {
+			
+			$userInput = $_POST['formCom'];
+			$sth = $dbh->prepare("select *
+									from committeemember
+									where cID in ( select cID
+										from memberbelongsto
+										where memberbelongsto.commName = \"$userInput\")");
+			$sth->execute();
+			echo "<h3>$userInput</h3>";
+			echo "<table class=\"w3-table\" style=\"color:black\">";
+			while ($row = $sth->fetch()) {
                    echo "<tr>";
-                   echo "<td>".$row[commName]."</td>";
-                   echo "<td>".$row[chair]."</td>";
+                   echo "<td>".$row[fName]."</td>";
+                   echo "<td>".$row[lName]."</td>";
                    echo "</tr>";
                }
-		echo "</table>";
+			echo "</table>";
+		}
+
+		
 	
 	?>
 </div>

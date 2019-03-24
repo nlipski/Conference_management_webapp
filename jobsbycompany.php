@@ -29,7 +29,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     <h3 href=""  class="w3-wide"><b>Conference Management Application</b></h3>
   </div>
   <div class="w3-padding-64 w3-large w3-text-grey" style="font-weight:bold">
-    <a href="/index.php" class="w3-bar-item w3-button w3-light-grey">Home</a>
+    <a href="/index.php" class="w3-bar-item w3-button ">Home</a>
     <a href="/committee.php" class="w3-bar-item w3-button">Committee</a>
     <a onclick="myAccFunc()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Jobs <i class="fa fa-caret-down"></i>
@@ -37,7 +37,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 	
     <div id="demoAcc1" class="w3-bar-block w3-hide w3-padding-large w3-medium">
       <a href="/jobs.php" class="w3-bar-item w3-button">All Jobs</a>
-      <a href="jobsbycompany.php" class="w3-bar-item w3-button">By Company</a>
+      <a href="jobsbycompany.php" class="w3-bar-item w3-button w3-light-grey">By Company</a>
     </div>
 	<a onclick="myAccFunc2()" href="javascript:void(0)" class="w3-button w3-block w3-white w3-left-align" id="myBtn">
       Attendees <i class="fa fa-caret-down"></i>
@@ -70,51 +70,65 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- Overlay effect when opening sidebar on small screens -->
 <div class="w3-overlay w3-hide-large" onclick="w3_close()" style="cursor:pointer" title="close side menu" id="myOverlay"></div>
 
+
   <header class="w3-container w3-xlarge">
     <p class="w3-left"></p>
     <p class="w3-right">
     </p>
   </header>
+  
 <!-- !PAGE CONTENT! -->
 <div class="w3-main" style="margin-left:290px">
   <div class="w3-display-container w3-container">
     <div class="w3-display-topleft" style="padding:44px 68px">
-    <div class="w3-display-topleft" style="padding:44px 68px">
+	
+   </div>
+	
+	<h1>Jobs by Company</h1>
 
-    </div>
-
-  </div>
+	<form class="w3-form" method="post">
 	<?php
-		echo "<h1>All jobs</h1>";
-		echo "<h3>Full list of available jobs</h3>";
-		$sth = $dbh->prepare('SELECT * FROM `jobposting`');
+		$sth = $dbh->prepare('select companyName from company');
 		$sth->execute();
-		
-		echo "<table class=\"w3-table\">";
-		echo "<tr>";
-		echo "<td><b> job ID</b></td>";
-		echo "<td><b> Title</b></td>";
-        echo "<td><b> City</b></td>";
-		echo "<td><b> Province</b></td>";
-        echo "<td><b> Salary</b></td>";
-		echo "<td><b> Company</b></td>";
-        echo "</tr>";
+		echo "<select class=\"w3-select w3-border\" name=\"formCom\">";
+		echo "<option value=\"\">Select a company</option>";
 		while ($row = $sth->fetch()) {
+			echo "<option value=\"$row[companyName]\">$row[companyName]</option>";
+		}
+		echo "</select>";
+		
+	?>
+	<input class="w3-button "type="submit" name="Submit" value="Choose">
+	</form>
+	<?php
+		if(isset($_POST['formCom']) ) {
+			
+			$userInput = $_POST['formCom'];
+			echo "<h3>Full list of available jobs from $userInput</h3>";
+			$sth = $dbh->prepare("select * from jobposting where jobposting.companyName = \"$userInput\"");
+			$sth->execute();
+			
+			echo "<table class=\"w3-table\">";
+			echo "<tr>";
+			echo "<td><b> job ID</b></td>";
+			echo "<td><b> Title</b></td>";
+			echo "<td><b> City</b></td>";
+			echo "<td><b> Province</b></td>";
+			echo "<td><b> Salary</b></td>";
+			echo "</tr>";
+			while ($row = $sth->fetch()) {
                    echo "<tr>";
                    echo "<td>".$row[jID]."</td>";
                    echo "<td>".$row[jobTitle]."</td>";
                    echo "<td>".$row[city]."</td>";
 				   echo "<td>".$row[province]."</td>";
                    echo "<td>".$row[payRate]."</td>";
-				   echo "<td>".$row[companyName]."</td>";
-                   
                    echo "</tr>";
                }
-		echo "</table>";
-	
+			echo "</table>";
+		}
 	?>
 </div>
-
 
 
 <script>
