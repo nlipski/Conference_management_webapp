@@ -54,8 +54,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
     </a>
 	<div id="demoAcc3" class="w3-bar-block w3-hide w3-padding-large w3-medium">
       <a href="addattendee.php" class="w3-bar-item w3-button">Add</a>
-	  <a href="#" class="w3-bar-item w3-button">Update</a>
-      <a href="#" class="w3-bar-item w3-button">Remove</a>
+	  <a href="editsession.php" class="w3-bar-item w3-button">Update</a>
+      <a href="removecompany.php" class="w3-bar-item w3-button">Remove</a>
     </div>
   </div>
 </nav>
