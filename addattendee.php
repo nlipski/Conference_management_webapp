@@ -105,19 +105,36 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 		</form>
 	</div>
 	<?php
-		if(isset($_POST['fName']) and isset($_POST['lName'])) {
+		if(isset($_POST['fName']) and isset($_POST['lName']) and isset($_POST['formTier'])) {
 			
-			$query = "CREATE VIEW temphousing as sELECT COUNT(student.aID) as numOccupied, student.roomNumber from student group by (student.roomNumber);
-				  CREATE VIEW accom as SELECT * from room NATURAL JOIN (temphousing) where room.roomNumber = temphousing.roomNumber;
-				  SELECT accom.roomNumber, MAX(accom.numBeds *2 - accom.numOccupied) FROM accom where accom.numBeds *2 > accom.numOccupied;
-				  DROP VIEW temphousing;
-				  DROP view accom;";
+			
+			$sth = $dbh->prepare("select * from attendee");
+			$sth->execute();
+			
+			$num = $sth->rowCount() + 1;
+			
 				  
-			$sql = $dbh->prepare("INSERT INTO company (companyName, sponsorship_tier, emailsSent)
-					VALUES ('".$_POST['companyName']."', '".$_POST['formTier']."', 0)");
+			$sql = $dbh->prepare("INSERT INTO attendee
+					VALUES ($num,'".$_POST['fName']."', '".$_POST['lName']."', '".$_POST['street']."', '".$_POST['city']."', '".$_POST['province']."','".$_POST['email']."','".$_POST['formTier']."')");
     
 			$sql->execute();
-			header("Refresh:0");
+			
+			if ($_POST['formTier'] == "Student"){
+				$query1 = $dbh->prepare("CREATE VIEW temphousing as sELECT COUNT(student.aID) as numOccupied, student.roomNumber from student group by (student.roomNumber);");
+				$query1->execute();
+				$query2 = $dbh->prepare("CREATE VIEW accom as SELECT * from room NATURAL JOIN (temphousing) where room.roomNumber = temphousing.roomNumber;");
+				$query2->execute();
+				$query3 = $dbh->prepare("SELECT roomNumber, MAX(accom.numBeds *2 - accom.numOccupied) FROM accom where accom.numBeds *2 > accom.numOccupied;");
+				$query3->execute();
+				$roomNum = ($query3->fetch())['roomNumber'];
+				echo "<h1> $roomNum </h1>";
+				$query4 = $dbh->prepare("DROP VIEW temphousing;");
+				$query4->execute();
+				$query5 = $dbh->prepare("DROP view accom;");
+				$query5->execute();
+			}
+			echo "<h1> Attendee added </h1>";
+			
 		}
 	?>
 </div>
