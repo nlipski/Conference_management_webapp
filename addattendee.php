@@ -85,7 +85,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 	
   </div>
   <div  class="w3-container" style="padding:20px;background-color: #f2f2f2;" >
-		<h3>Add a new company: </h3>
+		<h3>Add a new attendee: </h3>
 		<form class="w3-form" method="post">
 			First name: <input class="w3-input" type="text" name="fName"><br>
 			Last name: <input class="w3-input" type="text" name="lName"><br>
@@ -93,7 +93,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 			City: <input class="w3-input" type="text" name="city"><br>
 			Province: <input class="w3-input" type="text" name="province"><br>
 			Email: <input class="w3-input" type="text" name="email"><br>
-			Sponsorship tier:
+			Attendee type:
 			<select class="w3-select w3-border" name="formTier">
 				
 				<option value="">Select a type of attendee</option>
@@ -120,18 +120,20 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 			$sql->execute();
 			
 			if ($_POST['formTier'] == "Student"){
-				$query1 = $dbh->prepare("CREATE VIEW temphousing as sELECT COUNT(student.aID) as numOccupied, student.roomNumber from student group by (student.roomNumber);");
+				$query1 = $dbh->prepare("CREATE VIEW temphousing as SELECT COUNT(student.aID) as numOccupied, student.roomNumber from student group by (student.roomNumber);");
 				$query1->execute();
 				$query2 = $dbh->prepare("CREATE VIEW accom as SELECT * from room NATURAL JOIN (temphousing) where room.roomNumber = temphousing.roomNumber;");
 				$query2->execute();
 				$query3 = $dbh->prepare("SELECT roomNumber, MAX(accom.numBeds *2 - accom.numOccupied) FROM accom where accom.numBeds *2 > accom.numOccupied;");
 				$query3->execute();
 				$roomNum = ($query3->fetch())['roomNumber'];
-				echo "<h1> $roomNum </h1>";
+				$sql_student = $dbh->prepare("INSERT INTO student values($num, $roomNum)");
+				$sql_student->execute();
 				$query4 = $dbh->prepare("DROP VIEW temphousing;");
 				$query4->execute();
 				$query5 = $dbh->prepare("DROP view accom;");
 				$query5->execute();
+				echo "<h1> Student added to room $roomNum </h1>";
 			}
 			echo "<h1> Attendee added </h1>";
 			
