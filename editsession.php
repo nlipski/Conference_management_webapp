@@ -79,51 +79,55 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 <!-- !PAGE CONTENT! -->
 
 <div class="w3-main" style="margin-left:290px">
-  <div class="w3-display-container w3-container">
-    <div class="w3-display-topleft" style="padding:44px 68px">
+	<h1>Conference Session update</h1>
+  <div class="w3-display-container w3-container" style="padding:20px;background-color: #f2f2f2;">
 	
-   </div>
 	
-	<h1>Conference Schedule</h1>
 
 	<form class="w3-form" method="post">
 	<?php
-		$sth = $dbh->prepare('select distinct sessionDate from session');
+		$sth = $dbh->prepare('select distinct sessionName from session');
 		$sth->execute();
 		echo "<select class=\"w3-select w3-border\" name=\"formCom\">";
-		echo "<option value=\"\">Select a date...</option>";
+		echo "<option value=\"\">Select a session...</option>";
 		while ($row = $sth->fetch()) {
-			echo "<option value=\"$row[sessionDate]\">$row[sessionDate]</option>";
+			echo "<option value=\"$row[sessionName]\">$row[sessionName]</option>";
 		}
 		echo "</select>";
 		
 	?>
-	<input class="w3-button "type="submit" name="Submit" value="Choose">
+	Date: <input type="date" class="w3-date" name="sessionDate">
+	Start Time: <input type="time" class="w3-time" name="startTime">
+	End Time: <input type="time" class="w3-time" name="endTime">
+	<input class="w3-button" type="submit" name="Update">
 	</form>
 	<?php
 		if(isset($_POST['formCom']) ) {
 			
 			$userInput = $_POST['formCom'];
-			echo "<h3>List of sessions on ".$userInput." :</h3>";
-			$sth = $dbh->prepare("select * from session where session.sessionDate = \"$userInput\" order by startTime");
-			$sth->execute();
-			
-			echo "<table class=\"w3-table\">";
-			echo "<tr>";
-			echo "<td><b> Session name</b></td>";
-			echo "<td><b> Room number</b></td>";
-			echo "<td><b> Start time</b></td>";
-			echo "<td><b> End time</b></td>";
-			echo "</tr>";
-			while ($row = $sth->fetch()) {
-                   echo "<tr>";
-                   echo "<td>".$row[sessionName]."</td>";
-                   echo "<td>".$row[room]."</td>";
-				   echo "<td>".$row[startTime]."</td>";
-                   echo "<td>".$row[endTime]."</td>";
-                   echo "</tr>";
-               }
-			echo "</table>";
+			if (isset($_POST['sessionDate'])){
+				
+				$day = date("Y-m-d ", $_POST["sessionDate"]);
+				echo "<h1> $day </h1>";	
+				$sth = $dbh->prepare("update session set sessionDate= ".$_POST['sessionDate']." where sessionName=\"".$userInput."\"");
+				if ($sth->execute()){
+					echo "<h3> Updated session date </h3>";
+				}	
+			}
+			if (isset($_POST['startTime'])){
+				echo "<h1> test2</h1>";
+				$sth = $dbh->prepare("update session set startTime=\"".$_POST['startTime']."\" where sessionName=\"".$userInput."\"");
+				if ($sth->execute()){
+					echo "<h3> Updated session start time </h3>";
+				}	
+			}
+			if (isset($_POST['endTime'])){
+				echo "<h1> test3</h1>";
+				$sth = $dbh->prepare("update session set sessionDate=\"".$_POST['endTime']."\" where sessionName=\"".$userInput."\"");
+				if ($sth->execute()){
+					echo "<h3> Updated session end time </h3>";
+				}	
+			}
 		}
 	?>
 </div>
