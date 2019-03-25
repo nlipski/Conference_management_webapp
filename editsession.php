@@ -107,26 +107,61 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 			$userInput = $_POST['formCom'];
 			if (isset($_POST['sessionDate'])){
 				
-				$day = date("Y-m-d ", $_POST["sessionDate"]);
-				echo "<h1> $day </h1>";	
-				$sth = $dbh->prepare("update session set sessionDate= ".$_POST['sessionDate']." where sessionName=\"".$userInput."\"");
-				if ($sth->execute()){
+				$day =  $_POST["sessionDate"];
+				$new_date = date('Y-m-d', strtotime($day));
+				echo "<h1> $new_date for $userInput </h1>";	
+				$query1 = $dbh->prepare("ALTER TABLE speaksAt DROP foreign key speaksat_ibfk_1;");
+				$query1->execute();
+				$sth = $dbh->prepare("UPDATE session 
+									  SET session.sessionDate=\"".$new_date."\",session.endTime=\"".$time."\", session.startTime=\"".$time."\" 
+											
+									  WHERE session.sessionName=\"".$userInput."\" ;");
+				$sth1 = $dbh->prepare("UPDATE speaksAt 
+									  SET sessionDate=\"".$new_date."\" 
+									  WHERE sessionName=\"".$userInput."\" ;");
+				if($sth->execute() and $sth1->execute())
+				{
 					echo "<h3> Updated session date </h3>";
-				}	
+				}
+
+				$query2 = $dbh->prepare("ALTER TABLE speaksAt ADD CONSTRAINT speaksat_ibfk_1 foreign key(sessionName, room, startTime, sessionDate) references session(sessionName, room, startTime, sessionDate) on delete cascade;");
+				$query2->execute();
 			}
 			if (isset($_POST['startTime'])){
-				echo "<h1> test2</h1>";
-				$sth = $dbh->prepare("update session set startTime=\"".$_POST['startTime']."\" where sessionName=\"".$userInput."\"");
-				if ($sth->execute()){
-					echo "<h3> Updated session start time </h3>";
-				}	
+				$time =  $_POST["startTime"];
+				$query1 = $dbh->prepare("ALTER TABLE speaksAt DROP foreign key speaksat_ibfk_1;");
+				$query1->execute();
+				$sth = $dbh->prepare("UPDATE session 
+									  SET session.startTime=\"".$time."\" 
+									  WHERE session.sessionName=\"".$userInput."\" ;");
+				$sth1 = $dbh->prepare("UPDATE speaksAt 
+									  SET startTime=\"".$time."\" 
+									  WHERE sessionName=\"".$userInput."\" ;");
+				if($sth->execute() and $sth1->execute())
+				{
+					echo "<h3> Updated session start time</h3>";
+				}
+
+				$query2 = $dbh->prepare("ALTER TABLE speaksAt ADD CONSTRAINT speaksat_ibfk_1 foreign key(sessionName, room, startTime, sessionDate) references session(sessionName, room, startTime, sessionDate) on delete cascade;");
+				$query2->execute();
 			}
 			if (isset($_POST['endTime'])){
-				echo "<h1> test3</h1>";
-				$sth = $dbh->prepare("update session set sessionDate=\"".$_POST['endTime']."\" where sessionName=\"".$userInput."\"");
-				if ($sth->execute()){
-					echo "<h3> Updated session end time </h3>";
-				}	
+				$time =  $_POST["endTime"];
+				$query1 = $dbh->prepare("ALTER TABLE speaksAt DROP foreign key speaksat_ibfk_1;");
+				$query1->execute();
+				$sth = $dbh->prepare("UPDATE session 
+									  SET  
+									  WHERE session.sessionName=\"".$userInput."\" ;");
+				$sth1 = $dbh->prepare("UPDATE speaksAt 
+									  SET endTime=\"".$time."\" 
+									  WHERE sessionName=\"".$userInput."\" ;");
+				if($sth->execute() and $sth1->execute())
+				{
+					echo "<h3> Updated session end time</h3>";
+				}
+
+				$query2 = $dbh->prepare("ALTER TABLE speaksAt ADD CONSTRAINT speaksat_ibfk_1 foreign key(sessionName, room, startTime, sessionDate) references session(sessionName, room, startTime, sessionDate) on delete cascade;");
+				$query2->execute();
 			}
 		}
 	?>
