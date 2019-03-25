@@ -113,7 +113,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 				$query1 = $dbh->prepare("ALTER TABLE speaksAt DROP foreign key speaksat_ibfk_1;");
 				$query1->execute();
 				$sth = $dbh->prepare("UPDATE session 
-									  SET session.sessionDate=\"".$new_date."\",session.endTime=\"".$time."\", session.startTime=\"".$time."\" 
+									  SET session.sessionDate=\"".$new_date."\"
 											
 									  WHERE session.sessionName=\"".$userInput."\" ;");
 				$sth1 = $dbh->prepare("UPDATE speaksAt 
@@ -121,7 +121,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 									  WHERE sessionName=\"".$userInput."\" ;");
 				if($sth->execute() and $sth1->execute())
 				{
-					echo "<h3> Updated session date </h3>";
+					echo "<h3> Updated session  </h3>";
 				}
 
 				$query2 = $dbh->prepare("ALTER TABLE speaksAt ADD CONSTRAINT speaksat_ibfk_1 foreign key(sessionName, room, startTime, sessionDate) references session(sessionName, room, startTime, sessionDate) on delete cascade;");
@@ -137,10 +137,8 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 				$sth1 = $dbh->prepare("UPDATE speaksAt 
 									  SET startTime=\"".$time."\" 
 									  WHERE sessionName=\"".$userInput."\" ;");
-				if($sth->execute() and $sth1->execute())
-				{
-					echo "<h3> Updated session start time</h3>";
-				}
+				$sth->execute();
+				$sth1->execute();
 
 				$query2 = $dbh->prepare("ALTER TABLE speaksAt ADD CONSTRAINT speaksat_ibfk_1 foreign key(sessionName, room, startTime, sessionDate) references session(sessionName, room, startTime, sessionDate) on delete cascade;");
 				$query2->execute();
@@ -150,7 +148,7 @@ body,h1,h2,h3,h4,h5,h6,.w3-wide {font-family: "Montserrat", sans-serif;}
 				$query1 = $dbh->prepare("ALTER TABLE speaksAt DROP foreign key speaksat_ibfk_1;");
 				$query1->execute();
 				$sth = $dbh->prepare("UPDATE session 
-									  SET  
+									  SET endTime=\"".$time."\"   
 									  WHERE session.sessionName=\"".$userInput."\" ;");
 				$sth1 = $dbh->prepare("UPDATE speaksAt 
 									  SET endTime=\"".$time."\" 
